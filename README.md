@@ -68,21 +68,5 @@ INSERT INTO Products (Name, Price) VALUES
 ('Headphones', 199.99);
 GO
 
-## 🌐 MVC Application
-- ASP.NET Core MVC application built with .NET 6/8.
-- Displays product listings from SQL Server.
-- Includes full CRUD functionality: Add, Edit, Delete, View.
-- Uses Entity Framework Core for database access.
-- Configured to run on port 5000.
 
-## ▶️ How to Run the Application
-# Step 1: Clone the repository
-git clone https://github.com/your-repo-url/project-name
-cd project-name
-
-# Step 2: Build and run containers
-docker-compose up --build
-
-# Step 3: Visit the web app
-http://localhost:5000
 
