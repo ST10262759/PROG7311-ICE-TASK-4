@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  # SQL Server Database
+  db:
+    image: yourdockerhubusername/products-db:latest
+    container_name: products-db
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=P@ssw0rd123!
+      - MSSQL_PID=Express
+    ports:
+      - "1433:1433"
+    volumes:
+      - mssql-data:/var/opt/mssql
+    networks:
+      - products-network
+    healthcheck:
+      test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "P@ssw0rd123!" -Q "SELECT 1" || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ASP.NET Core MVC Web Application
+  web:
+    image: yourdockerhubusername/products-mvc-app:latest
+    container_name: products-mvc-app
+    ports:
+      - "5000:5000"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__DefaultConnection=Server=db;Database=ProductsDb;User=sa;Password=P@ssw0rd123!;TrustServerCertificate=True;
+    networks:
+      - products-network
+
+networks:
+  products-network:
+    driver: bridge
+
+volumes:
+  mssql-data:
